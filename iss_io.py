@@ -21,7 +21,7 @@ pass_parser.add_argument('--lon', required=True, type=float,
                          help='longitude coordinate'
                          )
 pass_parser = subparsers.add_parser(
-    'people', help='get the current crew members aboard the ISS'
+    'people', help='get the current astronauts aboard the ISS'
 )
 
 args = parser.parse_args()
@@ -54,3 +54,8 @@ elif args.command == 'pass':
     print(f'\nThe ISS will be overhead ({args.lat},{args.lon}) '
           f'at {next_pass_time} for {str(duration)}\n'
           )
+
+elif args.command == 'people':
+    resp_json = requests.get(f'{API_URL}astros.json').json()
+    names = [x.get('name') for x in resp_json.get('people')]
+    print(f'\nAstronauts aboard the ISS: {", ".join(names)}\n')
