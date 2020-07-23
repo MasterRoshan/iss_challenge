@@ -1,7 +1,7 @@
 import requests
-import time
+from datetime import datetime, timedelta
 import argparse
-
+from urllib.parse import urlencode
 API_URL = 'http://api.open-notify.org/'
 
 parser = argparse.ArgumentParser(
@@ -31,13 +31,26 @@ if args.command == 'loc':
 
     location = resp_json.get('iss_position')
 
-    current_time = time.strftime('%H:%M:%S', time.localtime())
+    current_time = datetime.strftime(datetime.now(), '%H:%M:%S')
 
     print(
-        f"\nThe current location of the ISS at {current_time}\n"
-        f"latitute: {location.get('latitude')}\n"
-        f"longitude: {location.get('longitude')}\n"
+        f'\nThe current location of the ISS at {current_time}'
+        f" is ({location.get('latitude')}, {location.get('longitude')})\n"
     )
 
 elif args.command == 'pass':
-    pass
+    query = {
+        'lat': args.lat,
+        'lon': args.lon
+    }
+    url_query = urlencode(query)
+    resp_json = requests.get(f'{API_URL}iss-pass.json?{url_query}').json()
+
+    timestamp = resp_json.get('response')[0].get('risetime')
+    next_pass = datetime.fromtimestamp(timestamp)
+    next_pass_time = datetime.strftime(next_pass, '%H:%M:%S')
+    duration = timedelta(seconds=resp_json.get('response')[0].get('duration'))
+
+    print(f'\nThe ISS will be overhead ({args.lat},{args.lon}) '
+          f'at {next_pass_time} for {str(duration)}\n'
+          )
