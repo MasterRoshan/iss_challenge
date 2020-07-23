@@ -25,12 +25,24 @@ Example: “The ISS will be overhead {LAT, LONG} at {time} for {duration}”
 **people**
 
 for each craft print the details of those people that are currently in space
-## Dependencies
+## Dependencies and Installation
 
-This script depends on requests
+Requires >python 3.6 (because I like fstrings)
+
+Install with ```python setup.py install```
+
+Or install the requirements and run it as a script, this script depends on requests
 ```pip install requests``` or ```pip install -r requirements.txt```
 
 ## Usage
+If you installed with setuptools
+```
+iss_io -h
+```
+If you run it as a script
+```
+python iss_io.py -h
+```
 ```
 usage: iss_io.py [-h] {loc,pass,people} ...
 

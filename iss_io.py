@@ -108,6 +108,8 @@ def main():
         print_next_pass(args.lat, args.lon)
     elif args.command == 'people':
         print_people()
+    else:
+        parser.print_help()
 
 
 if __name__ == "__main__":
