@@ -12,12 +12,12 @@ loc_parser = subparsers.add_parser(
     'loc', help='get the current location of the ISS'
 )
 pass_parser = subparsers.add_parser(
-    'pass', help='pass coordinates with --lat and --long'
+    'pass', help='pass coordinates with --lat and --lon'
 )
 pass_parser.add_argument('--lat', required=True,
                          type=float, help='latitude coordinate'
                          )
-pass_parser.add_argument('--long', required=True, type=float,
+pass_parser.add_argument('--lon', required=True, type=float,
                          help='longitude coordinate'
                          )
 pass_parser = subparsers.add_parser(
