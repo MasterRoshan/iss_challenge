@@ -54,7 +54,7 @@ def print_next_pass(lat: float, lon: float):
     next_pass_time = datetime.strftime(next_pass, '%H:%M:%S')
     duration = timedelta(seconds=resp_json.get('response')[0].get('duration'))
 
-    print(f'\nThe ISS will be overhead ({lat},{lon}) '
+    print(f'\nThe ISS will be overhead ({lat}, {lon}) '
           f'at {next_pass_time} for {str(duration)}\n'
           )
 
