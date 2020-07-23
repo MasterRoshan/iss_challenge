@@ -1,7 +1,7 @@
 import requests
 from datetime import datetime, timedelta
 import argparse
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urljoin
 
 API_URL = 'http://api.open-notify.org/'
 
@@ -14,7 +14,8 @@ def print_current_location():
     None
 
     """
-    resp_json = requests.get(f'{API_URL}iss-now.json').json()
+    path = 'iss-now.json'
+    resp_json = requests.get(urljoin(API_URL, path)).json()
 
     location = resp_json.get('iss_position')
 
@@ -22,7 +23,7 @@ def print_current_location():
 
     print(
         f'\nThe current location of the ISS at {current_time}'
-        f" is ({location.get('latitude')}, {location.get('longitude')})\n"
+        f' is ({location.get("latitude")}, {location.get("longitude")})\n'
     )
 
 
@@ -45,8 +46,8 @@ def print_next_pass(lat: float, lon: float):
         'lat': lat,
         'lon': lon
     }
-    url_query = urlencode(query)
-    resp_json = requests.get(f'{API_URL}iss-pass.json?{url_query}').json()
+    path = 'iss-pass.json?' + urlencode(query)
+    resp_json = requests.get(urljoin(API_URL, path)).json()
 
     timestamp = resp_json.get('response')[0].get('risetime')
     next_pass = datetime.fromtimestamp(timestamp)
@@ -66,7 +67,8 @@ def print_people():
     None
 
     """
-    resp_json = requests.get(f'{API_URL}astros.json').json()
+    path = 'astros.json'
+    resp_json = requests.get(urljoin(API_URL, path)).json()
     names = [x.get('name') for x in resp_json.get('people')]
     print(f'\nAstronauts aboard the ISS: {", ".join(names)}\n')
 
