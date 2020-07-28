@@ -1,5 +1,4 @@
 import unittest
-from unittest.mock import patch
 import iss_io
 from io import StringIO
 import re
