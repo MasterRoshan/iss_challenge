@@ -6,12 +6,12 @@ from urllib.parse import urlencode, urljoin
 API_URL = 'http://api.open-notify.org/'
 
 
-def print_current_location():
-    """Prints out the current coordinates of the ISS
+def current_location():
+    """Response containing the current position of the ISS
 
     Returns
     -------
-    None
+    String
 
     """
     path = 'iss-now.json'
@@ -21,25 +21,25 @@ def print_current_location():
 
     current_time = datetime.strftime(datetime.now(), '%H:%M:%S')
 
-    print(
-        f'\nThe current location of the ISS at {current_time}'
-        f' is ({location.get("latitude")}, {location.get("longitude")})\n'
+    return(
+        f'The current location of the ISS at {current_time}'
+        f' is ({location.get("latitude")}, {location.get("longitude")})'
     )
 
 
-def print_next_pass(lat: float, lon: float):
-    """Prints when the next time the ISS will be overhead for given coordinates
+def next_pass(lat: float, lon: float):
+    """Response: the next time the ISS will be overhead for given coordinates
 
     Parameters
     ----------
     lat : float
-        Description of parameter `lat`.
+        The latitude coordinate.
     lon : float
-        Description of parameter `lon`.
+        The longitude coordinate.
 
     Returns
     -------
-    None
+    String
 
     """
     query = {
@@ -54,23 +54,23 @@ def print_next_pass(lat: float, lon: float):
     next_pass_time = datetime.strftime(next_pass, '%H:%M:%S')
     duration = timedelta(seconds=resp_json.get('response')[0].get('duration'))
 
-    print(f'\nThe ISS will be overhead ({lat}, {lon}) '
-          f'at {next_pass_time} for {str(duration)}\n'
-          )
+    return(f'The ISS will be overhead ({lat}, {lon}) '
+           f'at {next_pass_time} for {str(duration)}'
+           )
 
 
-def print_people():
-    """Prints the names of the astronauts aboard the ISS
+def people():
+    """Response containing the names of the astronauts aboard the ISS
 
     Returns
     -------
-    None
+    String
 
     """
     path = 'astros.json'
     resp_json = requests.get(urljoin(API_URL, path)).json()
     names = [x.get('name') for x in resp_json.get('people')]
-    print(f'\nAstronauts aboard the ISS: {", ".join(names)}\n')
+    return(f'Astronauts aboard the ISS: {", ".join(names)}')
 
 
 def main():
@@ -103,11 +103,11 @@ def main():
     args = parser.parse_args()
 
     if args.command == 'loc':
-        print_current_location()
+        print(current_location())
     elif args.command == 'pass':
-        print_next_pass(args.lat, args.lon)
+        print(next_pass(args.lat, args.lon))
     elif args.command == 'people':
-        print_people()
+        print(people())
     else:
         parser.print_help()
 

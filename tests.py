@@ -7,25 +7,22 @@ import re
 
 class TestISSFunctions(unittest.TestCase):
     def test_print_current_location(self):
-        with patch('sys.stdout', new=StringIO()) as stdout_capture:
-            iss_io.print_current_location()
-            self.assertTrue(re.match(
-                '\nThe current location of the ISS at \d+:\d+:\d+ is \([-+]?\d*\.*\d+, [-+]?\d*\.*\d+\)\n\n', stdout_capture.getvalue())
-            )
+        current_location = iss_io.current_location()
+        self.assertTrue(re.match(
+            'The current location of the ISS at \d+:\d+:\d+ is \([-+]?\d*\.*\d+, [-+]?\d*\.*\d+\)', current_location)
+        )
 
     def test_print_next_pass(self):
-        with patch('sys.stdout', new=StringIO()) as stdout_capture:
-            iss_io.print_next_pass(48.858504, 2.294513)
-            self.assertTrue(re.match(
-                '\nThe ISS will be overhead \([-+]?\d*\.*\d+, [-+]?\d*\.*\d+\) at \d+:\d+:\d+ for \d+:\d+:\d+\n\n', stdout_capture.getvalue())
-            )
+        next_pass = iss_io.next_pass(48.858504, 2.294513)
+        self.assertTrue(re.match(
+            'The ISS will be overhead \([-+]?\d*\.*\d+, [-+]?\d*\.*\d+\) at \d+:\d+:\d+ for \d+:\d+:\d+', next_pass)
+        )
 
     def test_print_people(self):
-        with patch('sys.stdout', new=StringIO()) as stdout_capture:
-            iss_io.print_people()
-            self.assertTrue(re.match(
-                '\nAstronauts aboard the ISS: .*\n\n', stdout_capture.getvalue())
-            )
+        people = iss_io.people()
+        self.assertTrue(re.match(
+            'Astronauts aboard the ISS: .*', people)
+        )
 
 
 if __name__ == '__main__':
